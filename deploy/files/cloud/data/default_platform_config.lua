@@ -391,7 +391,7 @@ function ConfigureMatchmaker()
 
 	-- low on-line
 	local arcadeQueueTemplate = {
-		maxPlayers = 24,
+		maxPlayers = 16, -- stock 24; with excessive-bot kicking off, caps humans so 16 + bots fits a 12v12 battle
 		optimalPlayers = 4,
 		minPlayers = 1,
 		maxExpandTime = 30,
@@ -406,17 +406,17 @@ function ConfigureMatchmaker()
 			s1338_pandora_dreadnwreck = {4,9,11},
 		},
 		query = { ["mmParams.arcade"] = 1, mmRank = { ["$gte"] = 1, ["$lte"] = 15 }, mmSquadRank = { ["$gte"] = 1, ["$lte"] = 15 }, mmValue = { ["$gte"] = 0, ["$lt"] = 100 } },
-		special = { arcade = 1, botsCount = 7 },
+		special = { arcade = 1, botsCount = 8 }, -- total participants (humans + bots); even, so teams start 4v4
 	}
 
 	--
 	--arcadeQueueTemplate.levelsDesc = "s1338_pandora_dreadnwreck:4; s1340_thar_aliendebris13:4; s8256_thar_threshold:4"
 	-- tiers by ship rank (mmValue is 0 for everyone here, so it can't split the pools)
-	table.insert( queuesConfigLo, InstantiateQueueTemplate( arcadeQueueTemplate, 1, 3, 1, 3, 0, 100, { special = { queueFlags = { newbie = 1, }, }, maxPlayers = 16 } ) )
-	table.insert( queuesConfigLo, InstantiateQueueTemplate( arcadeQueueTemplate, 4, 6, 4, 6, 0, 100 ) )
-	table.insert( queuesConfigLo, InstantiateQueueTemplate( arcadeQueueTemplate, 7, 9, 7, 9, 0, 100 ) )
-	table.insert( queuesConfigLo, InstantiateQueueTemplate( arcadeQueueTemplate, 10, 12, 10, 12, 0, 100 ) )
-	table.insert( queuesConfigLo, InstantiateQueueTemplate( arcadeQueueTemplate, 13, 17, 13, 17, 0, 100 ) )
+	table.insert( queuesConfigLo, InstantiateQueueTemplate( arcadeQueueTemplate, 1, 3, 1, 3, 0, 100, { qid = 101, special = { queueFlags = { newbie = 1, }, }, maxPlayers = 16 } ) )
+	table.insert( queuesConfigLo, InstantiateQueueTemplate( arcadeQueueTemplate, 4, 6, 4, 6, 0, 100, { qid = 102 } ) )
+	table.insert( queuesConfigLo, InstantiateQueueTemplate( arcadeQueueTemplate, 7, 9, 7, 9, 0, 100, { qid = 103 } ) )
+	table.insert( queuesConfigLo, InstantiateQueueTemplate( arcadeQueueTemplate, 10, 12, 10, 12, 0, 100, { qid = 104 } ) )
+	table.insert( queuesConfigLo, InstantiateQueueTemplate( arcadeQueueTemplate, 13, 17, 13, 17, 0, 100, { qid = 105 } ) )
 	--
 	--arcadeQueueTemplate.levelsDesc = "s1338_devilsjaw:4,9,10; s1340_aliendestsatation:4,10; s1340_thar_gasgiant:4,9; s1420_ceres3_northmsite:4,9,10"
 	--
@@ -448,11 +448,11 @@ function ConfigureMatchmaker()
 	--
 	--coopQueueTemplate.levelsDesc = "s1338_pandora_dreadnwreck:4; s1340_thar_aliendebris13:4; s8256_thar_threshold:4"
 	-- tiers by ship rank (mmValue is 0 for everyone here, so it can't split the pools)
-	table.insert( queuesConfigLo, InstantiateQueueTemplate( coopQueueTemplate, 1, 3, 1, 3, 0, 100, { special = { queueFlags = { newbie = 1, }, coop_vs_ai = 1 }, maxPlayers = 8 } ) )
-	table.insert( queuesConfigLo, InstantiateQueueTemplate( coopQueueTemplate, 4, 6, 4, 6, 0, 100 ) )
-	table.insert( queuesConfigLo, InstantiateQueueTemplate( coopQueueTemplate, 7, 9, 7, 9, 0, 100 ) )
-	table.insert( queuesConfigLo, InstantiateQueueTemplate( coopQueueTemplate, 10, 12, 10, 12, 0, 100 ) )
-	table.insert( queuesConfigLo, InstantiateQueueTemplate( coopQueueTemplate, 13, 17, 13, 17, 0, 100 ) )
+	table.insert( queuesConfigLo, InstantiateQueueTemplate( coopQueueTemplate, 1, 3, 1, 3, 0, 100, { qid = 201, special = { queueFlags = { newbie = 1, }, coop_vs_ai = 1 }, maxPlayers = 8 } ) )
+	table.insert( queuesConfigLo, InstantiateQueueTemplate( coopQueueTemplate, 4, 6, 4, 6, 0, 100, { qid = 202 } ) )
+	table.insert( queuesConfigLo, InstantiateQueueTemplate( coopQueueTemplate, 7, 9, 7, 9, 0, 100, { qid = 203 } ) )
+	table.insert( queuesConfigLo, InstantiateQueueTemplate( coopQueueTemplate, 10, 12, 10, 12, 0, 100, { qid = 204 } ) )
+	table.insert( queuesConfigLo, InstantiateQueueTemplate( coopQueueTemplate, 13, 17, 13, 17, 0, 100, { qid = 205 } ) )
 	--
 	--coopQueueTemplate.levelsDesc = "s1338_devilsjaw:4,9,10; s1340_aliendestsatation:4,10; s1340_thar_gasgiant:4,9; s1420_ceres3_northmsite:4,9,10"
 	--
@@ -1345,7 +1345,7 @@ function ConfigureDediServer()
 	_G.DedicatedServerServices_SetupBotPresetForbidden( botPresetForbiddenDefs )
 
 	-- Кикать ли игроков из боя, если ботов стало больше, чем игроков.
-	cvars.sv_kickExcessiveBotsEnabled = 1
+	cvars.sv_kickExcessiveBotsEnabled = 0 -- stock 1: on expansion it always kicks bots from team 1, unbalancing teams
 
 	-- Количество лучших игроков, чьи корабли сохраняются для адаптивных пресетов; -1 — все игроки и все корабли. (тип: целое число; диапазон: -1..MAX_PLAYERS)
 	-- количество сохранения лучших игроков SC-115316
