@@ -49,4 +49,4 @@ Many players from Russia log in and get disconnected about 20 s later (Shard: `O
 - The old MatchMaker logs FATAL "undeleted shared strings" while shutting down. That is a leak report on exit, not a runtime error.
 - The premium timer overflows at about 68 years.
 - About 547 ships on one account crash Shard.
-- Trading tax is progressive (0% up to 500, then 10/20/30/50%) and lives in `data\gamedata\trade.lua`. `TradingLimits.minAccountRank = 6` there seems to apply to trade adverts, not to mail.
+- `TradingLimits.minAccountRank = 6` in `data\gamedata\trade.lua` seems to apply to trade adverts, not to mail.

@@ -1,9 +1,10 @@
 # Changes against the stock server
 
-All changes are in three files under `deploy/files`, which `setup.ps1` copies over the stock install:
+All changes are in four files under `deploy/files`, which `setup.ps1` copies over the stock install:
 - `cloud/data/default_platform_config.lua` (matchmaker, rewards, loot, trading). Read at start.
 - `cloud/data/shard.cfg` (Shard). Read at start.
 - `data/gamedata/def/ex/junk.lua` (loot items). The battle server reads it directly, no regeneration needed.
+- `data/gamedata/trade.lua` (trading tax). **Needs regeneration** into `cloud/data/aux_limits.xml` after copying.
 
 Every change below was tested on a local server before going live. Values are what we run; tune them to your population.
 
@@ -66,7 +67,9 @@ In both `ConfigureShard()` blocks:
 - `shard_minAntibotCounterForMailSending = 10` (stock 50): sending mail with attachments unlocks after 10 battles.
 - `shard_is2StepAuthForMailSendingNeeded = 0` (stock unset, which acts as on). Otherwise players whose battles were played from another PC are blocked.
 
-Admins can set a player's counter with the `setStat` admin task (see [ADMIN.md](ADMIN.md)). The trading tax itself is stock: it is progressive, from 0% up to 50% (`data\gamedata\trade.lua` → `TradingTax`, generated into `aux_limits.xml`).
+Admins can set a player's counter with the `setStat` admin task (see [ADMIN.md](ADMIN.md)). 
+
+**Trading tax, softened.** `data/gamedata/trade.lua` → `TradingTax`: 0% up to 2000, 10% up to 10000, 20% above (stock: 0% up to 500, then 10 / 20 / 30 / 50%). The server reads the generated `cloud/data/aux_limits.xml`, so after copying the file regenerate the data (see [ADMIN.md](ADMIN.md#regenerating-game-data)). Only the `<TradingTax>` block should change.
 
 ## Flood limit
 `shard.cfg`: `sm_reqFreqOverloadLine 5` and `sm_overloadCounterLimit 20`. The stock limit, about 0.8 requests per second, kicks players with "too many messages" while they gather resources in open space. Flood protection stays on, just with headroom.
