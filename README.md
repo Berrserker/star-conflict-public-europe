@@ -45,4 +45,4 @@ EU Unofficial Server (Warsaw): address `57.131.200.242`, port `3801`.
 - Discord: https://discord.gg/83YkbJbwxx
 - Telegram: https://t.me/star_conflict_europe
 
-Issues and pull requests are welcome. If you run your own server with this kit, feel free to tell us.
+Issues and pull requests are welcome, see [CONTRIBUTING.md](CONTRIBUTING.md). If you run your own server with this kit, feel free to tell us.
