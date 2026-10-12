@@ -1,0 +1,34 @@
+# Game, databases and backups: huge, and contain player data (passwords, IPs)
+game/
+server/
+db/
+backups/
+
+# Build/tool output and temporary stuff
+sc-vps.zip
+.wrangler/
+node_modules/
+diag/
+_update_*/
+deploy/stats/geo/*.csv
+
+# Packet captures and dumps contain player IPs
+*.etl
+*.pcapng
+*.dmp
+
+# Local-only helpers for this PC
+start_game.bat
+start_server_only.bat
+
+# Superseded modified kit files kept on the VPS only
+deploy/files/**/*.old
+
+# Local-only restart helper
+restart_local_server.ps1
+
+# Status push token copied from the VPS (secret)
+status_push.token
+
+# Player logs / archives (contain player IPs)
+*.zip

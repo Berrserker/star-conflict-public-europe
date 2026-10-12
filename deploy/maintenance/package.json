@@ -1,0 +1,6 @@
+{
+  "name": "sc-hub-console",
+  "private": true,
+  "description": "Send commands to the Star Conflict Hub SSH console (maintenance countdown, restart).",
+  "dependencies": { "ssh2": "1.15.0" }
+}

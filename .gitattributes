@@ -1,0 +1,2 @@
+# Never touch line endings or encodings: game files are cp1251 + CRLF and must stay byte-exact.
+* -text
