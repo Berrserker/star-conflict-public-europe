@@ -50,8 +50,17 @@ InstantiateQueueTemplate( arcadeQueueTemplate, 4, 6, 4, 6, 0, 100 )
 ```
 The same goes for `coopQueueTemplate`. Stock coop queues also stopped at rank 15, so rank 16–17 ships could never find a vs-AI battle.
 
+### Bots by tier, with the full AI
+Each low-online tier queue sets `botPresetNames = { "BotsT1" }` … `{ "BotsT5" }` in its `special`. The MatchMaker reads this **list of strings** from the queue's `special`, picks one at random and passes it to the battle as `botPresetName`. Without it, every battle used `AiPreset.Default`: T1 ships, poor aim, no missiles, 1% module use and no evasion. With the tier presets, bots fly ships of the queue's tier and use missiles and modules, and they evade, as in the original game. Note that `special` passed through `InstantiateQueueTemplate(…, addMods)` **replaces** the template's `special` completely, so each queue repeats `arcade = 1`, `botsCount` and so on.
+
+### 8v8 vs-AI battles
+The low-online vs-AI queues use `special = { botsCount = 16, botPresetNames = {…} }` **without** `coop_vs_ai = 1` (with that flag, the MatchMaker gives 1 bot per player and ignores `botsCount`), plus `maxPlayers = 16`. The battle is still a vs-AI battle, and a solo player gets 8v8.
+
+### Beacon Hunt in PvP
+Mode 10 is added to the low-online arcade maps that support it (devilsjaw, northmsite, asteroidcity, dreadnwreck).
+
 ### More bots in PvP
-`special = { arcade = 1, botsCount = 8 }` in the low-online arcade template (stock: no `botsCount`), the way the stock `one_against_all` queue does it. `botsCount` is the **total number of participants** (humans + bots), not the number of bots, so 8 means a solo player starts 4v4 with 7 bots. Stock behaviour without it is 1 human + 1 bot. `mm_botsCount` does not affect this. The vs-AI queues ignore `botsCount`.
+`special = { arcade = 1, botsCount = 8 }` in the low-online arcade template (stock: no `botsCount`), the way the stock `one_against_all` queue does it. `botsCount` is the **total number of participants** (humans + bots), not the number of bots, so 8 means a solo player starts 4v4 with 7 bots. This also keeps teams even when humans join a running battle: the stock code kicks an "excessive" bot from the larger team, and from team 1 on a tie. With an odd total (for example 7: 4v3), a joining pair left the creator's team two bots short (3v4). With 8 it stays 4v4. Stock behaviour without it is 1 human + 1 bot. `mm_botsCount` does not affect this. The vs-AI queues ignore `botsCount`.
 
 ### One region pool
 Every queue had `regionLocalizedTimeInQueue = 10` (training 30): for the first N seconds the matchmaker pairs players only within their region (for example `AR_RU` vs Europe). That matters with several datacenters, but on a single server it just splits the few players you have, and with a 10 s wait, regions never mixed. All 24 occurrences are now `1`, the value the stock sector queues use. A comment there says the default is 120, so we avoid `0`.
@@ -64,9 +73,6 @@ The low-online arcade template has `maxTimeInQueue = 60` (stock 10): the queue w
 
 ### A separate `qid` per tier queue
 Each low-online tier queue has its own `qid`: arcade 101–105 and coop 201–205 (stock: 0 everywhere except the sector queues). The MatchMaker's game expansion (`maxExpandTime = 30`: queued players are added to a game during its first 30 s) only fills games whose id matches the queue. With every queue at `qid = 0`, any queue could expand any game, so T1 players ended up in T5 battles. We verified this by decompiling `MatchMaker.exe`. Note that `maxMMValueDiff` (a queue parameter) defaults to unlimited.
-
-### No excessive-bot kicking
-`cvars.sv_kickExcessiveBotsEnabled = 0` in `ConfigureDediServer()` (stock 1). When humans join a running battle (expansion adds them in pairs, one per team), the stock battle server kicks "excessive" bots, and it **always takes them from team 1 if team 1 has any** (decompiled `GameplayRules_SpaceBattle.cpp`), so one team ends up two bots short. With kicking off, the joined humans are simply added and the teams stay as balanced as they started. To keep battles from growing too big, the low-online arcade template has `maxPlayers = 16` (stock 24): at most 16 humans plus up to 6 bots.
 
 ### PvE missions in a party
 Both `-- PVE QUEUE` entries have `maxPlayers = 4` (stock 1), so PvE missions can be played in a party.
