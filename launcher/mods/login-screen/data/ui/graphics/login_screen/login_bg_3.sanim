@@ -1,0 +1,213 @@
+﻿source_file "Y:/art/source/ui/graphics/login_screen/login_screen.ma"
+//by sergey_mitryaev
+//at Tue Oct 22 15:12:17 2019
+
+base_res 1280 720
+
+animations 1
+{
+	anim idle
+	{
+		mode looped
+		cycle_time 15
+	}
+}
+
+total_elements 11
+
+sprites 11
+{
+	total_vertices 44
+
+	sprite objectName191
+	{
+		defaults
+		{
+			rows 2
+			cols 2
+			texture "ui/textures/hud_turret.tif"
+			anchor "BC"
+			vertices
+			{
+				1623.95 545.081	1623.95 554.714	1017.96 545.081	1017.96 554.714	
+				0.866105 0.000885308	0.841105 0.000885308	0.866105 0.844055	0.841105 0.844055	
+				0xff6e6e6e	0xff6e6e6e	0xff6e6e6e	0xff6e6e6e	
+			}
+		}
+		visible_on idle
+	}
+	sprite objectName190
+	{
+		defaults
+		{
+			rows 2
+			cols 2
+			texture "ui/textures/hud_turret.tif"
+			anchor "BC"
+			vertices
+			{
+				1016.67 545.081	1016.67 554.714	410.67 545.081	410.671 554.714	
+				0.866105 0.000885308	0.841105 0.000885308	0.866105 0.844055	0.841105 0.844055	
+				0xff6e6e6e	0xff6e6e6e	0xff6e6e6e	0xff6e6e6e	
+			}
+		}
+		visible_on idle
+	}
+	sprite objectName189
+	{
+		defaults
+		{
+			rows 2
+			cols 2
+			texture "ui/textures/hud_turret.tif"
+			anchor "BC"
+			vertices
+			{
+				-195.391 554.714	-195.391 545.081	410.609 554.714	410.609 545.081	
+				0.841105 0.000885308	0.866105 0.000885308	0.841105 0.844055	0.866105 0.844055	
+				0xff6e6e6e	0xff6e6e6e	0xff6e6e6e	0xff6e6e6e	
+			}
+		}
+		visible_on idle
+	}
+	sprite objectName201
+	{
+		defaults
+		{
+			rows 2
+			cols 2
+			texture "ui/textures/interation_2/hangar.tif"
+			blend color_add
+			anchor "BC"
+			vertices
+			{
+				-607.581 560.735	1879.42 560.735	-607.581 563.155	1879.42 563.155	
+				0.423645 0.688608	0.449402 0.688608	0.423645 0.711783	0.449402 0.711783	
+				0xffffffff	0xffffffff	0xffffffff	0xffffffff	
+			}
+		}
+		visible_on idle
+	}
+	sprite objectName83
+	{
+		defaults
+		{
+			rows 2
+			cols 2
+			texture "ui/textures/interation_2/hangar.tif"
+			blend color_add
+			anchor "BC"
+			vertices
+			{
+				-527.538 551.784	-361.069 551.784	-527.538 573.083	-361.069 573.083	
+				0.457144 0.688018	0.484262 0.688018	0.457144 0.712373	0.484262 0.712373	
+				0xff000000	0xff000000	0xff000000	0xff000000	
+			}
+		}
+		visible_on idle
+	}
+	sprite objectName50
+	{
+		defaults
+		{
+			rows 2
+			cols 2
+			texture "ui/textures/interation_2/hangar.tif"
+			blend color_add
+			anchor "BC"
+			vertices
+			{
+				-783.804 559.933	-104.804 559.933	-783.804 564.933	-104.804 564.933	
+				0.423645 0.688608	0.449402 0.688608	0.423645 0.711783	0.449402 0.711783	
+				0xffffffff	0xffffffff	0xffffffff	0xffffffff	
+			}
+		}
+		visible_on idle
+	}
+	sprite objectName188
+	{
+		defaults
+		{
+			rows 2
+			cols 2
+			texture "ui/textures/hud_turret.tif"
+			anchor "BC"
+			vertices
+			{
+				1613.53 545.081	1613.53 554.714	1007.54 545.081	1007.54 554.714	
+				0.866105 0.000885308	0.841105 0.000885308	0.866105 0.844055	0.841105 0.844055	
+				0xff6e6e6e	0xff6e6e6e	0xff6e6e6e	0xff6e6e6e	
+			}
+		}
+		visible_on idle
+	}
+	sprite objectName187
+	{
+		defaults
+		{
+			rows 2
+			cols 2
+			texture "ui/textures/hud_turret.tif"
+			anchor "BC"
+			vertices
+			{
+				-205.809 554.714	-205.809 545.081	400.191 554.714	400.191 545.081	
+				0.841105 0.000885308	0.866105 0.000885308	0.841105 0.844055	0.866105 0.844055	
+				0xff6e6e6e	0xff6e6e6e	0xff6e6e6e	0xff6e6e6e	
+			}
+		}
+		visible_on idle
+	}
+	sprite objectName186
+	{
+		defaults
+		{
+			rows 2
+			cols 2
+			texture "ui/textures/hud_turret.tif"
+			anchor "BC"
+			vertices
+			{
+				1006.25 545.081	1006.25 554.714	400.253 545.081	400.253 554.714	
+				0.866105 0.000885308	0.841105 0.000885308	0.866105 0.844055	0.841105 0.844055	
+				0xff6e6e6e	0xff6e6e6e	0xff6e6e6e	0xff6e6e6e	
+			}
+		}
+		visible_on idle
+	}
+	sprite dfeee1
+	{
+		defaults
+		{
+			rows 2
+			cols 2
+			texture "ui/textures/interation_2/hangar.tif"
+			anchor "BC"
+			vertices
+			{
+				-3115.47 561.193	4739.94 561.193	-3115.47 720	4739.94 720	
+				0.238312 0.0118223	0.252306 0.0118223	0.238312 0.0338629	0.252306 0.0338629	
+				0xc4c4c4c4	0xc4c4c4c4	0xc4c4c4c4	0xc4c4c4c4	
+			}
+		}
+		visible_on idle
+	}
+	sprite dfeee76
+	{
+		defaults
+		{
+			rows 2
+			cols 2
+			texture "ui/textures/sc_classic_logo.tif"
+			anchor "LT"
+			vertices
+			{
+				12 2	392 2	12 192	392 192	
+				0 0	1 0	0 1	1 1	
+				0xffffffff	0xffffffff	0xffffffff	0xffffffff	
+			}
+		}
+		visible_on idle
+	}
+}
+
