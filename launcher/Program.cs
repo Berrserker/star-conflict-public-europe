@@ -19,8 +19,8 @@ using Microsoft.Win32;
 [assembly: AssemblyDescription("Лаунчер Star Conflict Europe - Unofficial Server")]
 [assembly: AssemblyCompany("Star Conflict Community")]
 [assembly: AssemblyProduct("SC Launcher")]
-[assembly: AssemblyVersion("0.7.0.0")]
-[assembly: AssemblyFileVersion("0.7.0.0")]
+[assembly: AssemblyVersion("0.7.1.0")]
+[assembly: AssemblyFileVersion("0.7.1.0")]
 
 namespace SCCommunitySetup
 {
@@ -1034,8 +1034,8 @@ namespace SCCommunitySetup
     {
         // Built-in values, so the exe works alone; a key in launcher-config.ini overrides them (an empty value disables).
         private static readonly Dictionary<string, string> Defaults = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-            { "NewsFeedUrl", "https://star-conflict-eu-server.mak17.workers.dev/news.json" },
-            { "ModManifestUrl", "https://star-conflict-eu-server.mak17.workers.dev/sc-mods/manifest.txt" }
+            { "NewsFeedUrl", "https://star-conflict-eu-server.mak17.workers.dev/news.json https://sc.profit-cat.com/news.json" },
+            { "ModManifestUrl", "https://star-conflict-eu-server.mak17.workers.dev/sc-mods/manifest.txt https://sc.profit-cat.com/sc-mods/manifest.txt" }
         };
 
         internal static string Get(string key)
@@ -1306,22 +1306,25 @@ namespace SCCommunitySetup
 
         internal static List<NewsItem> Load()
         {
-            string url = LauncherSettings.Get("NewsFeedUrl");
-            if (String.IsNullOrWhiteSpace(url)) return Fallback();
-            Uri uri;
-            if (!Uri.TryCreate(url, UriKind.Absolute, out uri) || uri.Scheme != Uri.UriSchemeHttps)
-                return LoadCacheOrFallback();
-
-            try
+            // Like ModManifestUrl: several feeds separated by spaces or '|', tried in order.
+            string[] urls = LauncherSettings.Get("NewsFeedUrl").Split(new[] { ' ', '|', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            if (urls.Length == 0) return Fallback();
+            foreach (string url in urls)
             {
-                byte[] json = Download(uri);
-                List<NewsItem> items = Parse(json);
-                string cache = CachePath();
-                Directory.CreateDirectory(Path.GetDirectoryName(cache));
-                File.WriteAllBytes(cache, json);
-                return items;
+                Uri uri;
+                if (!Uri.TryCreate(url, UriKind.Absolute, out uri) || uri.Scheme != Uri.UriSchemeHttps) continue;
+                try
+                {
+                    byte[] json = Download(uri);
+                    List<NewsItem> items = Parse(json);
+                    string cache = CachePath();
+                    Directory.CreateDirectory(Path.GetDirectoryName(cache));
+                    File.WriteAllBytes(cache, json);
+                    return items;
+                }
+                catch { }
             }
-            catch { return LoadCacheOrFallback(); }
+            return LoadCacheOrFallback();
         }
 
         internal static List<NewsItem> Fallback()
@@ -1395,7 +1398,7 @@ namespace SCCommunitySetup
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             request.Timeout = 5000;
             request.ReadWriteTimeout = 5000;
-            request.UserAgent = "SC-Launcher/0.7.0";
+            request.UserAgent = "SC-Launcher/0.7.1";
             using (WebResponse response = request.GetResponse())
             using (Stream input = response.GetResponseStream())
             using (MemoryStream output = new MemoryStream())
@@ -1420,10 +1423,25 @@ namespace SCCommunitySetup
 
     internal static class ModUpdater
     {
+        // ModManifestUrl may list several manifests separated by spaces or '|': the main site first, then
+        // mirrors. A network failure (e.g. an ISP resetting *.workers.dev) moves on to the next source;
+        // files already installed from the previous one pass the hash check and are not downloaded again.
         internal static string ApplyConfigured(string gameRoot)
         {
-            string manifestUrl = LauncherSettings.Get("ModManifestUrl");
-            if (String.IsNullOrWhiteSpace(manifestUrl)) return String.Empty;
+            string[] sources = LauncherSettings.Get("ModManifestUrl").Split(new[] { ' ', '|', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            if (sources.Length == 0) return String.Empty;
+            Exception last = null;
+            foreach (string source in sources)
+            {
+                try { return ApplyFrom(gameRoot, source); }
+                catch (WebException ex) { last = ex; }
+                catch (IOException ex) { last = ex; }
+            }
+            throw last;
+        }
+
+        private static string ApplyFrom(string gameRoot, string manifestUrl)
+        {
             Uri manifestUri;
             if (!Uri.TryCreate(manifestUrl, UriKind.Absolute, out manifestUri) || manifestUri.Scheme != Uri.UriSchemeHttps)
                 throw new InvalidDataException("ModManifestUrl must use HTTPS");
@@ -1552,7 +1570,7 @@ namespace SCCommunitySetup
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             WebClient client = new WebClient();
-            client.Headers[HttpRequestHeader.UserAgent] = "SC-Launcher/0.7.0";
+            client.Headers[HttpRequestHeader.UserAgent] = "SC-Launcher/0.7.1";
             return client;
         }
 

@@ -1,4 +1,4 @@
-SC Launcher 0.7.0
+SC Launcher 0.7.1
 =================
 
 Purpose
