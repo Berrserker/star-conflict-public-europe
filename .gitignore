@@ -20,6 +20,10 @@ deploy/stats/geo/*.csv
 # Local-only helpers for this PC
 start_game.bat
 start_server_only.bat
+Makefile
+sync.ps1
+Taskfile.yml
+deploy/patch-server-address.ps1
 
 # Superseded modified kit files kept on the VPS only
 deploy/files/**/*.old

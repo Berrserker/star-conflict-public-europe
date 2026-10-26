@@ -20,6 +20,9 @@ if ($LASTEXITCODE -ge 8) { throw "robocopy failed with code $LASTEXITCODE" }
 
 # 2. Our changes on top of stock: tutorial premium (50 years) and flood threshold
 Copy-Item "$kit\files\*" $ServerDir -Recurse -Force
+# Quest freighter speed is a lua overlay. The copy above puts the file in place;
+# this line teaches designersdefs.lua to load it. Safe to re-run.
+& "$kit\patch-quest-transport.ps1" -GameDir $ServerDir
 
 # 3. Advertise the public address to clients (cloud.xml defaults to 127.0.0.1)
 $cloudXml = "$ServerDir\cloud\data\cloud.xml"
