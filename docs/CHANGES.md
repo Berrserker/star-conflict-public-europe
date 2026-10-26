@@ -38,6 +38,9 @@ The loot config stopped at rank 15, so rank 16–17 ships got an empty trophy se
 ### Credits ×2
 `cvars.rate_cred = "2,2,…"` (18 values, one per rank; stock all `1`). A battle log shows it as `"rate_cred"`. `cvars.rate_exp` is the same thing for experience; we keep it at 1.
 
+### PvE insignias follow the credit multiplier
+Unlimited and wave PvE insignia amounts (`UnlimitedPvE.resource_min` / `resource_max`, and the same fields on `UnlimitedPvE.wave`) are multiplied by the first number of `cvars.rate_cred` when a battle starts. Upgrade costs stay stock. Stock `unlim_pve.lua` is not replaced. `deploy/patch-pve-insignia.ps1` copies `data/gamedata/def/ex/pve_insignia_rate.lua` and inserts one `sys.execscript` line into `designersdefs.lua`. It does not edit the quest-transport patch. `setup.ps1` runs it on its own.
+
 ## Matchmaking (low-online queues)
 Below `mm_lowOnlineLo = 250` players online, the `queuesConfigLo` block applies. Bots fill the empty slots, `minPlayers = 1`.
 
